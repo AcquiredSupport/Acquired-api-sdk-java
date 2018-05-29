@@ -40,12 +40,10 @@ public class Void_deal extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-		String original_transaction_id = request.getParameter("transaction_id");		
+		String original_transaction_id = request.getParameter("original_transaction_id");		
 							
 		try {
-			AQPay aqpay = new AQPay();			
-			aqpay.setParam("mid_id", "1014");
-			aqpay.setParam("mid_pass", "test");
+			AQPay aqpay = new AQPay();
 			aqpay.setParam("original_transaction_id", original_transaction_id);		
 			JsonObject result = aqpay.void_deal();
 			
@@ -54,11 +52,11 @@ public class Void_deal extends HttpServlet {
 			System.out.println("response_message: " + result.get("response_message"));
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
+			// Perform actions based on the result
 			if(aqpay.isSignatureValid(result)) {
 				
 				System.out.println("SUCCESS: Request sucess");
-				response.getWriter().append("SUCCESS: Request sucess");
-				//do your job
+				response.getWriter().append("SUCCESS: Request sucess");				
 				
 			}else {
 				System.out.println("ERROR: Invalid response");

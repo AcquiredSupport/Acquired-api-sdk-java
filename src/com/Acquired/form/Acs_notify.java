@@ -54,10 +54,8 @@ public class Acs_notify extends HttpServlet {
 				byte[] asBytes = Base64.getDecoder().decode(md);
 				String mdstr = new String(asBytes, "utf-8");
 				JsonObject mdjson = new JsonParser().parse(mdstr).getAsJsonObject();
-				
-				auth.setParam("mid_id", mdjson.get("mid_id").getAsString());
-				auth.setParam("mid_pass", mdjson.get("mid_pass").getAsString());
-				auth.setParam("original_transaction_id", mdjson.get("transaction_id").getAsString());
+												
+				auth.setParam("original_transaction_id", mdjson.get("original_transaction_id").getAsString());
 				auth.setParam("merchant_order_id", mdjson.get("merchant_order_id").getAsString());
 				auth.setParam("amount", mdjson.get("amount").getAsString());
 				auth.setParam("currency_code_iso3", mdjson.get("currency_code_iso3").getAsString());
@@ -71,8 +69,7 @@ public class Acs_notify extends HttpServlet {
 				
 				if(auth.isSignatureValid(result)) {
 					
-					System.out.println("SUCCESS: Request sucess [postSettleACS]");					
-					//do your job
+					System.out.println("SUCCESS: Request sucess [postSettleACS]");
 					
 				}else {
 					System.out.println("ERROR: Invalid response [postSettleACS]");					

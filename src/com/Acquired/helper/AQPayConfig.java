@@ -3,7 +3,8 @@ package com.Acquired.helper;
 public class AQPayConfig {	
 	
 	public static final String COMPANYID = "test";
-	public static final String COMMPANYPASS = "test";
+	public static final String COMPANYPASS = "test";
+	public static final String COMPANYMIDID = "test";
 	public static final String HASHCODE = "test";
 	 
 	//require api url

@@ -70,9 +70,7 @@ public class Credit extends HttpServlet {
 		String email = request.getParameter("email");
 							
 		try {
-			AQPay aqpay = new AQPay();			
-			aqpay.setParam("mid_id", "1014");
-			aqpay.setParam("mid_pass", "test");			
+			AQPay aqpay = new AQPay();
 			//set transaction data
 			aqpay.setParam("merchant_order_id", merchant_order_id);
 			aqpay.setParam("amount", amount);
@@ -112,11 +110,11 @@ public class Credit extends HttpServlet {
 			System.out.println("response_message: " + result.get("response_message"));
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
+			//Perform actions based on the result
 			if(aqpay.isSignatureValid(result)) {
 				
 				System.out.println("SUCCESS: Request sucess");
-				response.getWriter().append("SUCCESS: Request sucess");
-				//do your job							
+				response.getWriter().append("SUCCESS: Request sucess");							
 				
 			}else {
 				System.out.println("ERROR: Invalid response");

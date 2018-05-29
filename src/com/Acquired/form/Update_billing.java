@@ -40,7 +40,7 @@ public class Update_billing extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");		
-		String original_transaction_id = request.getParameter("transaction_id");
+		String original_transaction_id = request.getParameter("original_transaction_id");
 		String title = request.getParameter("title");
 		String fname = request.getParameter("fname");
 		String mname = request.getParameter("mname");
@@ -64,9 +64,7 @@ public class Update_billing extends HttpServlet {
 		String email = request.getParameter("email");
 							
 		try {
-			AQPay aqpay = new AQPay();			
-			aqpay.setParam("mid_id", "1014");
-			aqpay.setParam("mid_pass", "test");			
+			AQPay aqpay = new AQPay();
 			//set transaction data			
 			aqpay.setParam("original_transaction_id", original_transaction_id);
 			//set customer data
@@ -100,11 +98,11 @@ public class Update_billing extends HttpServlet {
 			System.out.println("response_message: " + result.get("response_message"));
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
+			// Perform actions based on the result
 			if(aqpay.isSignatureValid(result)) {
 				
 				System.out.println("SUCCESS: Request sucess");
-				response.getWriter().append("SUCCESS: Request sucess");
-				//do your job							
+				response.getWriter().append("SUCCESS: Request sucess");				
 				
 			}else {
 				System.out.println("ERROR: Invalid response");

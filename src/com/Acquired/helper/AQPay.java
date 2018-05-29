@@ -57,14 +57,11 @@ public class AQPay {
 	}
 	
 	private void setBasicParam() throws Exception {
-		if(this.param.get("mid_pass") == null || this.param.get("mid_pass").equals("")) {
-			this.param.put("company_id", AQPayConfig.COMPANYID);
-			this.param.put("company_pass", AQPayConfig.COMMPANYPASS);
-			if(this.param.get("mid_id") != null && !this.param.get("mid_id").equals("")) {
-				this.param.put("company_mid_id",this.param.get("mid_id"));
-				this.param.remove("mid_id");
-			}
-		}
+		
+		this.param.put("company_id", AQPayConfig.COMPANYID);
+		this.param.put("company_pass", AQPayConfig.COMPANYPASS);
+		this.param.put("company_mid_id", AQPayConfig.COMPANYMIDID);
+		
 		this.param.put("timestamp", this.util.now());
 		String hashcode = AQPayConfig.HASHCODE;
 		this.param.put("request_hash", this.util.requestHash(this.param, hashcode));

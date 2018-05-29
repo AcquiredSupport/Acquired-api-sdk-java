@@ -114,9 +114,7 @@ public class Auth_ extends HttpServlet {
 							
 		try {
 			/*====== step 2: Set parameters ======*/
-			AQPay aqpay = new AQPay();
-			aqpay.setParam("mid_id", "1014");
-			aqpay.setParam("mid_pass", "test");
+			AQPay aqpay = new AQPay();			
 			aqpay.setParam("vt", "");
 			aqpay.setParam("useragent", "");
 			//set transaction data
@@ -166,13 +164,12 @@ public class Auth_ extends HttpServlet {
 			/*====== step 4: Check response hash ======*/
 			if(aqpay.isSignatureValid(result)) {
 				
-				/*====== step 5: Do your business ======*/
+				/*====== step 5: Perform actions based on the result ======*/
 				System.out.println("SUCCESS: Request sucess");
-				response.getWriter().append("SUCCESS: Request sucess");
-				//do your job
+				response.getWriter().append("SUCCESS: Request sucess");				
 				
 				/*====== deal 3-D secure ======*/
-				if(tds_action.equals("ENQUIRE") && result.get("tds") != null) {
+				if(tds_action.equals("ENQUIRE") && result.get("tds") != null) {										
 					
 					JsonObject tdsobj = result.get("tds").getAsJsonObject();
 					
@@ -180,7 +177,8 @@ public class Auth_ extends HttpServlet {
 					if(Arrays.asList(response_code_array).contains(result.get("response_code").getAsString())) {
 						aqpay.setParam("pareq", tdsobj.get("pareq").getAsString());
 						aqpay.setParam("ACS_url", tdsobj.get("url").getAsString());
-						String termurl = "./acs_notify";
+						
+						String termurl = "http://youdomain.com/acs_notify";
 						aqpay.setParam("termurl", termurl);
 						
 						/*
@@ -190,9 +188,8 @@ public class Auth_ extends HttpServlet {
 	                        And you can read these param from you sqlserver when post SETTLEMENT request.
 	                     */
 						JsonObject md = new JsonObject();
-						md.addProperty("mid_id", "1014");
-						md.addProperty("mid_pass", "test");
-						md.addProperty("transaction_id", result.get("transaction_id").getAsString());
+						md.addProperty("company_id", result.get("company_id").getAsString());
+						md.addProperty("original_transaction_id", result.get("transaction_id").getAsString());
 						md.addProperty("merchant_order_id", result.get("merchant_order_id").getAsString());
 						md.addProperty("amount", result.get("amount").getAsString());
 						md.addProperty("currency_code_iso3", result.get("currency_code_iso3").getAsString());
@@ -202,8 +199,11 @@ public class Auth_ extends HttpServlet {
 						String mdstr = Base64.getEncoder().encodeToString(md.toString().getBytes("utf-8"));
 						aqpay.setParam("md", mdstr);
 						
-						String postResult = aqpay.postToACS();
-						System.out.println("Post ACS Result: " + postResult);
+						request.setAttribute("url", tdsobj.get("url").getAsString());
+						request.setAttribute("pareq", tdsobj.get("pareq").getAsString());
+						request.setAttribute("termurl", termurl);
+						request.setAttribute("md", mdstr);
+						request.getRequestDispatcher("/examples/acs_submit.jsp").forward(request, response);												
 						
 					}					
 					

@@ -55,9 +55,7 @@ public class Rebill extends HttpServlet {
 		String merchant_order_id = ft.format(d) + (int)(Math.random()*1000);
 							
 		try {
-			AQPay aqpay = new AQPay();			
-			aqpay.setParam("mid_id", "1014");
-			aqpay.setParam("mid_pass", "test");
+			AQPay aqpay = new AQPay();
 			aqpay.setParam("transaction_type", transaction_type);
 			aqpay.setParam("merchant_order_id", merchant_order_id);
 			aqpay.setParam("amount", amount);
@@ -70,11 +68,11 @@ public class Rebill extends HttpServlet {
 			System.out.println("response_message: " + result.get("response_message"));
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
+			// Perform actions based on the result
 			if(aqpay.isSignatureValid(result)) {
 				
 				System.out.println("SUCCESS: Request sucess");
 				response.getWriter().append("SUCCESS: Request sucess");
-				//do your job
 				
 			}else {
 				System.out.println("ERROR: Invalid response");
