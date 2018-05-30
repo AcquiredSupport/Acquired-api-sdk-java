@@ -16,10 +16,10 @@ The Acquired API Library for Java enables you to work with Acquired APIs.
     |--form   (recieve html post data)
         Auth_.java
         Refund.java
+        AQPayConfig.java
     |--helper   (Acquired api sdk)
         AQPay.java
         AQPayCommont.java
-        AQPayConfig.java
 |--WebContent.WEB-INF.lib  
     gson-2.7.jar
 readme.md  
@@ -60,7 +60,7 @@ JsonObject result = aqpay.capture();
 ```java
 if(aqpay.isSignatureValid(result)) {
     
-    // do your job
+    // Perform actions based on the result
     
 }
 ```
