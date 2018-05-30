@@ -44,6 +44,13 @@ public class Void_deal extends HttpServlet {
 							
 		try {
 			AQPay aqpay = new AQPay();
+			//set basic data
+			aqpay.setParam("request_url", AQPayConfig.REQUESTURL);
+			aqpay.setParam("company_id", AQPayConfig.COMPANYID);
+			aqpay.setParam("company_pass", AQPayConfig.COMPANYPASS);
+			aqpay.setParam("company_mid_id", AQPayConfig.COMPANYMIDID);
+			aqpay.setParam("hash_code", AQPayConfig.HASHCODE);
+			
 			aqpay.setParam("original_transaction_id", original_transaction_id);		
 			JsonObject result = aqpay.void_deal();
 			
@@ -53,7 +60,7 @@ public class Void_deal extends HttpServlet {
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
 			// Perform actions based on the result
-			if(aqpay.isSignatureValid(result)) {
+			if(aqpay.isSignatureValid(result, AQPayConfig.HASHCODE)) {
 				
 				System.out.println("SUCCESS: Request sucess");
 				response.getWriter().append("SUCCESS: Request sucess");				

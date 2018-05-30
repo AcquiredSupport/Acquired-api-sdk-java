@@ -54,6 +54,13 @@ public class Acs_notify extends HttpServlet {
 				byte[] asBytes = Base64.getDecoder().decode(md);
 				String mdstr = new String(asBytes, "utf-8");
 				JsonObject mdjson = new JsonParser().parse(mdstr).getAsJsonObject();
+				
+				//set basic data
+				auth.setParam("request_url", AQPayConfig.REQUESTURL);
+				auth.setParam("company_id", AQPayConfig.COMPANYID);
+				auth.setParam("company_pass", AQPayConfig.COMPANYPASS);
+				auth.setParam("company_mid_id", AQPayConfig.COMPANYMIDID);
+				auth.setParam("hash_code", AQPayConfig.HASHCODE);
 												
 				auth.setParam("original_transaction_id", mdjson.get("original_transaction_id").getAsString());
 				auth.setParam("merchant_order_id", mdjson.get("merchant_order_id").getAsString());
@@ -67,7 +74,7 @@ public class Acs_notify extends HttpServlet {
 				System.out.println("response_message: " + result.get("response_message"));
 				System.out.println("transaction_id: " + result.get("transaction_id"));
 				
-				if(auth.isSignatureValid(result)) {
+				if(auth.isSignatureValid(result, AQPayConfig.HASHCODE)) {
 					
 					System.out.println("SUCCESS: Request sucess [postSettleACS]");
 					

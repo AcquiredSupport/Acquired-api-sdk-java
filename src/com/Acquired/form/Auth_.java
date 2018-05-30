@@ -110,11 +110,18 @@ public class Auth_ extends HttpServlet {
 		String zipcode = request.getParameter("zipcode");
 		String iso2 = request.getParameter("iso2");
 		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
+		String email = request.getParameter("email");		
 							
 		try {
 			/*====== step 2: Set parameters ======*/
-			AQPay aqpay = new AQPay();			
+			AQPay aqpay = new AQPay();
+			//set basic data
+			aqpay.setParam("request_url", AQPayConfig.REQUESTURL);
+			aqpay.setParam("company_id", AQPayConfig.COMPANYID);
+			aqpay.setParam("company_pass", AQPayConfig.COMPANYPASS);
+			aqpay.setParam("company_mid_id", AQPayConfig.COMPANYMIDID);
+			aqpay.setParam("hash_code", AQPayConfig.HASHCODE);
+			
 			aqpay.setParam("vt", "");
 			aqpay.setParam("useragent", "");
 			//set transaction data
@@ -162,7 +169,7 @@ public class Auth_ extends HttpServlet {
 			System.out.println("transaction_id: " + result.get("transaction_id"));
 			
 			/*====== step 4: Check response hash ======*/
-			if(aqpay.isSignatureValid(result)) {
+			if(aqpay.isSignatureValid(result, AQPayConfig.HASHCODE)) {
 				
 				/*====== step 5: Perform actions based on the result ======*/
 				System.out.println("SUCCESS: Request sucess");
